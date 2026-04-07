@@ -29,6 +29,7 @@ This system solves these challenges by providing:
 * **Validation:** Pydantic
 
 ## ✨ Features
+
 *👤 Employee Registration System
      Allows new users to register with secure password handling and data validation.
 *📝 Leave Application Management
