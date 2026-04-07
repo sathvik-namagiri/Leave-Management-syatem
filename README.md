@@ -29,7 +29,6 @@ This system solves these challenges by providing:
 * **Validation:** Pydantic
 
 
-
 ## 📁 Project Structure
 
 ```bash
