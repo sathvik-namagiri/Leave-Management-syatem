@@ -3,14 +3,12 @@ from models import LeaveRequest, Employee
 from datetime import date
 from passlib.context import CryptContext
 
-# 🔐 Use Argon2 instead of bcrypt
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 
 
 # ---------------- PASSWORD ----------------
 def hash_password(password: str):
-    password = password.strip()
-    return pwd_context.hash(password)
+    return pwd_context.hash(password.strip())
 
 
 def verify_password(plain_password: str, hashed_password: str):
@@ -45,7 +43,6 @@ def get_employee_count(db: Session):
 
 # ---------------- LEAVE ----------------
 def create_leave(db: Session, leave):
-
     if leave.start_date < date.today():
         raise ValueError("Cannot apply for past dates")
 
@@ -65,8 +62,25 @@ def create_leave(db: Session, leave):
     return new_leave
 
 
+# 🔥 UPDATED FUNCTION
 def get_leaves(db: Session):
-    return db.query(LeaveRequest).all()
+    results = db.query(LeaveRequest, Employee).join(
+        Employee, LeaveRequest.employee_id == Employee.id
+    ).all()
+
+    leaves = []
+    for leave, emp in results:
+        leaves.append({
+            "id": leave.id,
+            "employee_name": emp.name,
+            "leave_type": leave.leave_type,
+            "start_date": leave.start_date,
+            "end_date": leave.end_date,
+            "reason": leave.reason,
+            "status": leave.status
+        })
+
+    return leaves
 
 
 def update_status(db: Session, leave_id: int, status: str):
