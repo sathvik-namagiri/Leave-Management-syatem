@@ -18,7 +18,6 @@ def get_db():
 
 
 # ---------------- EMPLOYEE APIs ----------------
-
 @app.post("/employees/register", response_model=schemas.EmployeeResponse, status_code=201)
 def register_employee(emp: schemas.EmployeeCreate, db: Session = Depends(get_db)):
     try:
@@ -38,7 +37,6 @@ def get_employee_count(db: Session = Depends(get_db)):
 
 
 # ---------------- LEAVE APIs ----------------
-
 @app.post("/apply", response_model=schemas.LeaveResponse, status_code=201)
 def apply_leave(leave: schemas.LeaveCreate, db: Session = Depends(get_db)):
     try:
@@ -47,7 +45,8 @@ def apply_leave(leave: schemas.LeaveCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@app.get("/leaves", response_model=list[schemas.LeaveResponse])
+# 🔥 UPDATED (NO response_model)
+@app.get("/leaves")
 def get_all(db: Session = Depends(get_db)):
     return crud.get_leaves(db)
 
