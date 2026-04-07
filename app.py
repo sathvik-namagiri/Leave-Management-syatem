@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+import pandas as pd
 
 API = "http://127.0.0.1:8000"
 
@@ -67,13 +68,8 @@ elif menu == "📝 Apply Leave":
         st.error("⚠️ Could not fetch employees")
         emp_id = None
 
-    # 🔥 Updated Leave Type Dropdown
-    leave_type = st.selectbox(
-        "Leave Type",
-        ["Casual Leave", "Sick Leave", "Other"]
-    )
+    leave_type = st.selectbox("Leave Type", ["Casual Leave", "Sick Leave", "Other"])
 
-    # Optional custom input
     if leave_type == "Other":
         leave_type = st.text_input("Enter Leave Type")
 
@@ -82,23 +78,18 @@ elif menu == "📝 Apply Leave":
     reason = st.text_area("Reason")
 
     if st.button("Submit Leave"):
-        if not emp_id:
-            st.error("Employee not selected")
-        elif end < start:
-            st.error("End date cannot be before start date")
-        else:
-            res = requests.post(f"{API}/apply", json={
-                "employee_id": emp_id,
-                "leave_type": leave_type,
-                "start_date": str(start),
-                "end_date": str(end),
-                "reason": reason
-            })
+        res = requests.post(f"{API}/apply", json={
+            "employee_id": emp_id,
+            "leave_type": leave_type,
+            "start_date": str(start),
+            "end_date": str(end),
+            "reason": reason
+        })
 
-            if res.status_code == 201:
-                st.success("✅ Leave Applied Successfully")
-            else:
-                st.error(res.json().get("detail", "Error occurred"))
+        if res.status_code == 201:
+            st.success("✅ Leave Applied Successfully")
+        else:
+            st.error(res.json().get("detail", "Error occurred"))
 
 
 # ---------------- VIEW LEAVES ----------------
@@ -107,28 +98,36 @@ elif menu == "📋 View Leaves":
 
     try:
         leaves = requests.get(f"{API}/leaves").json()
-
-        if leaves:
-            st.dataframe(leaves)
-        else:
-            st.info("No leave records found")
-
+        st.dataframe(leaves)
     except:
         st.error("⚠️ Backend not reachable")
 
 
 # ---------------- ADMIN ----------------
 elif menu == "⚙️ Admin":
-    st.header("⚙️ Approve / Reject Leaves")
+    st.header("⚙️ Admin Panel")
 
-    leave_id = st.number_input("Leave ID", step=1)
+    try:
+        leaves = requests.get(f"{API}/leaves").json()
 
-    col1, col2 = st.columns(2)
+        st.subheader("📋 Employee Leave Details")
+        st.dataframe(leaves)
 
-    if col1.button("✅ Approve"):
-        res = requests.put(f"{API}/approve/{leave_id}")
-        st.success(res.json())
+        st.divider()
 
-    if col2.button("❌ Reject"):
-        res = requests.put(f"{API}/reject/{leave_id}")
-        st.error(res.json())
+        st.subheader("✏️ Update Leave Status")
+
+        leave_id = st.number_input("Enter Leave ID", step=1)
+
+        col1, col2 = st.columns(2)
+
+        if col1.button("✅ Approve"):
+            res = requests.put(f"{API}/approve/{leave_id}")
+            st.success(res.json())
+
+        if col2.button("❌ Reject"):
+            res = requests.put(f"{API}/reject/{leave_id}")
+            st.error(res.json())
+
+    except:
+        st.error("⚠️ Backend not reachable")
