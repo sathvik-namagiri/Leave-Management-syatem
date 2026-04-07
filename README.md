@@ -30,15 +30,15 @@ This system solves these challenges by providing:
 
 ## ✨ Features
 
-*👤 Employee Registration System
+*👤 **Employee Registration System**
      Allows new users to register with secure password handling and data validation.
-*📝 Leave Application Management
+*📝 **Leave Application Management**
      Employees can apply for leave by selecting dates and providing reasons.
-*⏳ Leave Status Tracking
+*⏳ **Leave Status Tracking**
      Track leave requests with statuses like Pending, Approved, and Rejected.
-*👨‍💼 Admin Control Panel
+*👨‍💼 **Admin Control Panel**
      Admin can review, approve, or reject leave requests efficiently.
-*📊 Interactive Dashboard
+*📊 **Interactive Dashboard**
      Displays key metrics such as total employees and leave statistics in real-time.
 
 ---
