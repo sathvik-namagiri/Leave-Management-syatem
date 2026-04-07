@@ -1,12 +1,11 @@
 
-# 📌 Leave Management System
+# 📌 Leave Management System Using FastAPI
 
 A full-stack **Leave Management System** built using **FastAPI (Backend)** and **Streamlit (Frontend)** to efficiently manage employee leave requests, approvals, and tracking.
 
 ---
 
-## 🚀 Overview
-
+## 🚀 Problem Statement
 Managing employee leave manually is often inefficient, error-prone, and lacks transparency. Organizations struggle with tracking requests, approvals, and maintaining accurate records.
 
 This system solves these challenges by providing:
